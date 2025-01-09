@@ -5,6 +5,7 @@ use App\Models\CandidateModel;
 use App\Models\UserModel;
 use App\Models\LoginlogModel;
 
+helper('jwt');
 // use Ramsey\Uuid\Guid\Guid;
 // use Ramsey\Uuid\Guid\GuidInterface;
 // use Ramsey\Uuid\Rfc4122\FieldsInterface;
@@ -266,7 +267,9 @@ class Auth extends BaseController{
                 "usertype"=>$user["role_text"],
                 "name"=>$user["name"],
                 "role_id"=>$user["role_id"],
-                'loginId'=>$loginId
+                'loginId'=>$loginId,
+                'access_token'=>generate_jwt(['username' => $user['username']],JWT_SECRET_KEY),
+                'refresh_token'=>generate_jwt(['username' => $user['username']],JWT_SECRET_KEY,24*3600),
             ]
         ]);
 
